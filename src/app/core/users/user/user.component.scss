@@ -1,0 +1,13 @@
+.user {
+  position: relative;
+
+  &__delete-button {
+    position: absolute;
+    right: 25px;
+    top: 15px;
+
+    &:hover {
+      transform: scale(1.2);
+    }
+  }
+}
