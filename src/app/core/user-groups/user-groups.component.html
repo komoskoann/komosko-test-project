@@ -1,0 +1,40 @@
+<div class="user-group__container">
+  <mat-expansion-panel (opened)="panelOpenState = true"
+    (closed)="panelOpenState = false"
+    *ngFor="let userGroup of userGroups | async">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{ userGroup.title }}
+      </mat-panel-title>
+      <mat-panel-description
+        class="user-group__delete-button">
+        <mat-icon>close</mat-icon>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <button mat-stroked-button [matMenuTriggerFor]="menu" color="primary">
+      Add new permission
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item >
+
+      </button>
+    </mat-menu>
+
+    <div>
+      <h4>User permissions</h4>
+      <mat-chip-list #chipList>
+        <mat-chip >
+
+          <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+      </mat-chip-list>
+    </div>
+
+
+  </mat-expansion-panel>
+
+
+  <button mat-raised-button color="primary" class="user-group__dialog" (click)="openDialog()">Create new user group</button>
+
+</div>

@@ -1,5 +1,5 @@
-import {UserGroup} from "../models/user-group.model";
-import {GROUP_PERMISSIONS} from "./permissions";
+import { UserGroup } from "../models/user-group.interface";
+import { GROUP_PERMISSIONS } from "./permissions";
 
 export const USER_GROUPS: UserGroup[] = [
   {

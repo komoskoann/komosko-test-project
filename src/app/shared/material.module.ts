@@ -5,6 +5,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatMenuModule } from '@angular/material/menu';
 
 
 @NgModule({
@@ -17,7 +19,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     MatDialogModule,
     MatChipsModule,
     MatIconModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatSelectModule,
+    MatMenuModule
   ],
   exports: [
     MatExpansionModule,
@@ -25,7 +29,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     MatDialogModule,
     MatChipsModule,
     MatIconModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatSelectModule,
+    MatMenuModule
   ],
 })
 export class MaterialModule {}
