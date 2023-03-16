@@ -8,7 +8,7 @@ import { User } from "../models/user.interface";
 })
 
 export class UserService {
-  private _users: User[] = USERS;
+  public _users: User[] = USERS;
   private _users$: BehaviorSubject<User[]> = new BehaviorSubject<User[]>(this._users);
 
   public get users(): Observable<User[]> {

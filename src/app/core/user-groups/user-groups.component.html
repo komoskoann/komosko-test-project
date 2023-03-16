@@ -13,29 +13,33 @@
       </mat-panel-description>
     </mat-expansion-panel-header>
 
-    <button mat-stroked-button [matMenuTriggerFor]="menu" color="primary">
+    <button mat-stroked-button [matMenuTriggerFor]="permissions" color="primary"
+    [disabled]="!getActualPermissions(userGroup.permissions).length">
       Add new permission
     </button>
-    <mat-menu #menu="matMenu">
-      <button mat-menu-item >
-
+    <mat-menu #permissions="matMenu">
+      <button mat-menu-item *ngFor="let permission of getActualPermissions(userGroup.permissions)"
+      (click)="addPermission(userGroup, permission)">
+        {{ permission }}
       </button>
     </mat-menu>
 
-    <button mat-stroked-button [matMenuTriggerFor]="menu" color="primary">
+    <button mat-stroked-button [matMenuTriggerFor]="users" color="primary"
+    [disabled]="!getActualUsers(userGroup.users).length">
       Assign user
     </button>
-    <mat-menu #menu="matMenu">
-      <button mat-menu-item>
-
+    <mat-menu #users="matMenu">
+      <button mat-menu-item *ngFor="let user of getActualUsers(userGroup.users)"
+      (click)="addUser(userGroup, user)">
+      {{ user.name }}
       </button>
     </mat-menu>
 
     <div>
       <h4>User group permissions</h4>
       <mat-chip-list #chipList>
-        <mat-chip *ngFor="let permission of userGroup.permissions"
-          (removed)="removePermission(userGroup.id, permission)">
+        <mat-chip *ngFor="let permission of userGroup.permissions; let i = index"
+          (removed)="removePermission(userGroup, i)">
             {{ permission }}
 
           <mat-icon matChipRemove>cancel</mat-icon>
@@ -46,8 +50,9 @@
     <div>
       <h4>Assigned users</h4>
       <mat-chip-list #chipList>
-        <mat-chip *ngFor="let user of userGroup.users" >
-          {{ user }}
+        <mat-chip *ngFor="let user of userGroup.users; let i = index"
+        (removed)="removeUser(userGroup, i)">
+          {{ user.name }}
 
           <mat-icon matChipRemove>cancel</mat-icon>
         </mat-chip>

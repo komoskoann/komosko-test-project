@@ -17,7 +17,7 @@ export class UserComponent extends BaseComponent {
 
   public panelOpenState: boolean = false;
   public users: Observable<User[]> = this._userService.users;
-  public availablePermissions: string[] = [...PERMISSIONS];
+  private _availablePermissions: string[] = [...PERMISSIONS];
 
   constructor(
     private _userService: UserService,
@@ -52,7 +52,7 @@ export class UserComponent extends BaseComponent {
   }
 
   public getActualPermissions(permissions: string[]): string[] {
-    return this.availablePermissions.filter(permission => !permissions.includes(permission));
+    return this._availablePermissions.filter(permission => !permissions.includes(permission));
   }
 
   public addPermission(user: User, permission: string): void {
