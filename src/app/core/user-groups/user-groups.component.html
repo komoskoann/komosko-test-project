@@ -7,7 +7,8 @@
         {{ userGroup.title }}
       </mat-panel-title>
       <mat-panel-description
-        class="user-group__delete-button">
+        class="user-group__delete-button"
+        (click)="deleteGroup(userGroup.id)">
         <mat-icon>close</mat-icon>
       </mat-panel-description>
     </mat-expansion-panel-header>
@@ -21,10 +22,32 @@
       </button>
     </mat-menu>
 
+    <button mat-stroked-button [matMenuTriggerFor]="menu" color="primary">
+      Assign user
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item>
+
+      </button>
+    </mat-menu>
+
     <div>
-      <h4>User permissions</h4>
+      <h4>User group permissions</h4>
       <mat-chip-list #chipList>
-        <mat-chip >
+        <mat-chip *ngFor="let permission of userGroup.permissions"
+          (removed)="removePermission(userGroup.id, permission)">
+            {{ permission }}
+
+          <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+      </mat-chip-list>
+    </div>
+
+    <div>
+      <h4>Assigned users</h4>
+      <mat-chip-list #chipList>
+        <mat-chip *ngFor="let user of userGroup.users" >
+          {{ user }}
 
           <mat-icon matChipRemove>cancel</mat-icon>
         </mat-chip>

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Observable, takeUntil } from 'rxjs';
 import { BaseComponent } from 'src/app/shared/components/base-component';
@@ -13,16 +13,17 @@ import { UserService } from 'src/app/shared/services/user.service';
   styleUrls: ['./user.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class UserComponent extends BaseComponent implements OnInit {
+export class UserComponent extends BaseComponent {
 
   public panelOpenState: boolean = false;
   public users: Observable<User[]> = this._userService.users;
+  public availablePermissions: string[] = [...PERMISSIONS];
 
-  constructor(private _userService: UserService, private _dialog: MatDialog) {
+  constructor(
+    private _userService: UserService,
+    private _dialog: MatDialog
+  ) {
     super();
-   }
-
-  ngOnInit(): void {
   }
 
   public deleteUser(id: number): void {
@@ -43,22 +44,22 @@ export class UserComponent extends BaseComponent implements OnInit {
 
     dialogRef.afterClosed()
       .pipe(takeUntil(this.componentDestroyed$))
-      .subscribe(data => this._userService.addUser(data.name));
+      .subscribe(data => data ? this._userService.addUser(data.name!) : '');
   }
 
-  public removePermission(id: number, permission: string): void {
-    this._userService.deleteUserPermission(id, permission);
+  public removePermission(user: User, permissionIndex: number): void {
+    user.permissions.splice(permissionIndex, 1);
   }
 
-  public getActualPermissions(id: number, permissions: string[]): string[] {
-    // console.log(this._userService.getUserPermissions(id));
-    PERMISSIONS.filter(permission => console.log(id, permission, this._userService.getUserPermissions(id), this._userService.getUserPermissions(id).includes(permission)));
-    return PERMISSIONS.filter(permission => !this._userService.getUserPermissions(id).includes(permission));
-
+  public getActualPermissions(permissions: string[]): string[] {
+    return this.availablePermissions.filter(permission => !permissions.includes(permission));
   }
 
-  public addPermission(id: number, permission: string): void {
-    this._userService.addUserPermission(id, permission);
+  public addPermission(user: User, permission: string): void {
+    user.permissions.push(permission);
   }
 
+  public trackById(_index: number, el: User) {
+    return el.id
+  }
 }

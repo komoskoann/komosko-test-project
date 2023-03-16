@@ -11,13 +11,9 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 export class DialogComponent {
 
   public form!: FormGroup;
-  public description: string = 'Create new user';
+  public description: string = this.data.title;
 
-  constructor(private _fb: FormBuilder, private _dialogRef: MatDialogRef<DialogComponent>, @Inject(MAT_DIALOG_DATA) data: any) {
-    if(data) {
-      this.description = data.description || this.description;
-    }
-  }
+  constructor(private _fb: FormBuilder, private _dialogRef: MatDialogRef<DialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {}
 
   public ngOnInit(): void {
     this.form = this._fb.group({
@@ -27,7 +23,7 @@ export class DialogComponent {
 
   public save(): void {
     this._dialogRef.close(this.form.value);
-    
+
   }
 
   public closeDialog(): void {

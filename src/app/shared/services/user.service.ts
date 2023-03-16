@@ -15,7 +15,7 @@ export class UserService {
     return this._users$.asObservable();
   }
 
-  public addUser(userName: string) {
+  public addUser(userName: string): void {
     const newUser: User = {
       id: Math.random(),
       name: userName,
@@ -25,46 +25,31 @@ export class UserService {
     }
 
     this._users = [...this._users, newUser];
-    this._updateUsers(this._users);
+    this._updateUsers();
   }
 
   public deleteUser(id: number): void {
     this._users = this._users.filter(user => user.id !== id);
-    this._updateUsers(this._users);
-  }
-
-  public getUserPermissions(id: number): string[] {
-    let permissions: string[] = [];
-    this._users.map(user => {
-      if (user.id === id) {
-        permissions = [...user.permissions];
-      }
-    })
-    return permissions;
+    this._updateUsers();
   }
 
   public deleteUserPermission(id: number, permission: string): void {
-    this._users.map(user => {
-      if (user.id === id) {
-        user.permissions.splice(user.permissions.indexOf(permission), 1);
-      }
-    })
+    this._users
+      .filter(user => user.id === id)
+      .map(user => user.permissions.splice(user.permissions.indexOf(permission), 1))
 
-    this._updateUsers(this._users);
+    this._updateUsers();
   }
 
   public addUserPermission(id: number, permission: string): void {
-    this._users.map(user => {
-      if (user.id === id) {
-        user.permissions.push(permission);
-      }
-    })
+    this._users
+      .filter(user => user.id === id)
+      .map(user => user.permissions = [...user.permissions, permission]);
 
-    this._updateUsers(this._users);
+    this._updateUsers();
   }
 
-  private _updateUsers(users: User[]): void {
-    this._users = users;
-    this._users$.next(users);
+  private _updateUsers(): void {
+    this._users$.next(this._users);
   }
 }

@@ -1,7 +1,7 @@
 <div class="user__container">
 
   <mat-expansion-panel
-    *ngFor="let user of users | async"
+    *ngFor="let user of users | async; trackBy: trackById"
     (opened)="panelOpenState = true"
     (closed)="panelOpenState = false">
     <mat-expansion-panel-header>
@@ -19,23 +19,23 @@
       mat-stroked-button
       [matMenuTriggerFor]="menu"
       color="primary"
+      [disabled]="!getActualPermissions(user.permissions).length"
       >
         Add new permission
     </button>
     <mat-menu #menu="matMenu">
       <button mat-menu-item
-        *ngFor="let permission of getActualPermissions(user.id, user.permissions)"
-        (click)="addPermission(user.id, permission)">
+        *ngFor="let permission of getActualPermissions(user.permissions) "
+        (click)="addPermission(user, permission)">
           {{ permission }}
       </button>
     </mat-menu>
-
     <div>
       <h4>User permissions</h4>
       <mat-chip-list #chipList>
         <mat-chip
-          *ngFor="let permission of user.permissions"
-          (removed)="removePermission(user.id, permission)">
+          *ngFor="let permission of user.permissions; let i = index"
+          (removed)="removePermission(user, i)">
             {{ permission }}
             <mat-icon matChipRemove>cancel</mat-icon>
         </mat-chip>

@@ -24,6 +24,14 @@ export class UserGroupsComponent extends BaseComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  public deleteGroup(id: number): void {
+    this._userGroupService.deleteUserGroup(id);
+  }
+
+  public removePermission(id: number, permission: string): void {
+    this._userGroupService.deleteGroupPermission(id, permission);
+  }
+
   public openDialog(): void {
     const dialogConfig: MatDialogConfig = new MatDialogConfig();
 
@@ -32,13 +40,13 @@ export class UserGroupsComponent extends BaseComponent implements OnInit {
 
     dialogConfig.data = {
       title: 'Create new user group'
-    };
+    }
 
     const dialogRef = this._dialog.open(DialogComponent, dialogConfig);
 
     dialogRef.afterClosed()
       .pipe(takeUntil(this.componentDestroyed$))
-      .subscribe(data => console.log(data.name));
+      .subscribe(data => data ? this._userGroupService.addUserGroup(data.name) : '');
   }
 
 }
